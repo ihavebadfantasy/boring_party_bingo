@@ -1,0 +1,23 @@
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+    const socket = io('http://localhost:3000');
+
+    socket.on('connect', () => {
+        console.log('Connected, socket id:', socket.id);
+
+        // небольшой таймаут для надёжного подключения
+        setTimeout(() => {
+            socket.emit('ping_room', { roomId: 'test-room' }, (response) => {
+                console.log('Received pong via callback:', response);
+            });
+        }, 100);
+    });
+
+    socket.on('ping_room', (data) => {
+        console.log('Received pong:', data);
+    });
+
+    socket.on('disconnect', () => {
+        console.log('Disconnected');
+    });
+</script>
